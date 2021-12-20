@@ -1,0 +1,73 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\W540\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Users\W540\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\TortoiseSVN\bin;C:\Program Files\curl-7.72.0-win64-mingw\bin;C:\Users\W540\anaconda3;C:\Users\W540\anaconda3\Library\mingw-w64\bin;C:\Users\W540\anaconda3\Library\usr\bin;C:\Users\W540\anaconda3\Library\bin;C:\Users\W540\anaconda3\Scripts;C:\Users\W540\AppData\Local\Microsoft\WindowsApps;C:\Users\W540\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\heroku\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Users\W540\AppData\Local\Android\Sdk\platform-tools;C:\Users\W540\AppData\Roaming\npm;C:\Users\W540\AppData\Local\Yarn\bin;C:\Program Files\JetBrains\WebStorm 2020.1.2\bin;;C:\Users\W540\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Java\jdk-13.0.2\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2020.3\bin;;C:\apache-maven-3.6.3\bin;C:\javacc-javacc-7.0.9\scripts;C:\Gradle\gradle-6.2\bin;C:\seleniumWebdrivers;
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  12.16.3
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EBUSY: resource busy or locked, copyfile 'C:\Users\W540\AppData\Local\Yarn\Cache\v6\npm-semver-5.7.1-a954f931aeba508d307bbf069eff0c01c96116f7-integrity\node_modules\semver\README.md' -> 'C:\Users\W540\Desktop\projects\femmes\mobile\node_modules\find-cache-dir\node_modules\semver\README.md'
+
+npm manifest: 
+  {
+    "name": "rn-material-kit-pro",
+    "version": "1.8.0",
+    "description": "Material Kit PRO React Native. Coded by Creative Tim",
+    "main": "node_modules/expo/AppEntry.js",
+    "private": true,
+    "scripts": {
+      "start": "cross-env REACT_EDITOR=code expo start",
+      "android": "cross-env REACT_EDITOR=code expo start --android",
+      "ios": "cross-env REACT_EDITOR=code expo start --ios",
+      "eject": "expo eject",
+      "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    },
+    "jest": {
+      "preset": "jest-expo"
+    },
+    "dependencies": {
+      "@react-native-community/masked-view": "0.1.10",
+      "@react-navigation/compat": "^5.1.25",
+      "@react-navigation/drawer": "5.12.4",
+      "@react-navigation/native": "5.9.3",
+      "@react-navigation/stack": "5.14.3",
+      "expo": "^40.0.0",
+      "expo-app-loading": "^1.0.1",
+      "expo-asset": "~8.2.1",
+      "expo-font": "~8.4.0",
+      "expo-linear-gradient": "~8.4.0",
+      "galio-framework": "^0.7.1",
+      "react": "16.13.1",
+      "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+      "react-native-dropdown-picker": "^3.7.0",
+      "react-native-gesture-handler": "~1.8.0",
+      "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
+      "react-native-reanimated": "~1.13.0",
+      "react-native-safe-area-context": "3.1.9",
+      "react-native-screens": "~2.15.2"
+    },
+    "devDependencies": {
+      "babel-preset-expo": "8.3.0",
+      "cross-env": "^7.0.0",
+      "expo-cli": "^3.11.7",
+      "jest-expo": "^40.0.0"
+    },
+    "bugs": {
+      "url": "https://github.com/creativetimofficial/ct-material-kit-pro-react-native/issues"
+    },
+    "homepage": "https://demos.creative-tim.com/material-kit-pro-react-native/"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
