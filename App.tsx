@@ -1,16 +1,16 @@
-import React from 'react';
-import { Platform, StatusBar, Image } from 'react-native';
-import AppLoading from 'expo-app-loading';
-import { Asset } from 'expo-asset';
-import { Block, GalioProvider } from 'galio-framework';
-import { NavigationContainer } from '@react-navigation/native';
+import React from "react";
+import { Platform, StatusBar, Image } from "react-native";
+import AppLoading from "expo-app-loading";
+import { Asset } from "expo-asset";
+import { Block, GalioProvider } from "galio-framework";
+import { NavigationContainer } from "@react-navigation/native";
 
 // Before rendering any navigation stack
-import { enableScreens } from 'react-native-screens';
+import { enableScreens } from "react-native-screens";
 enableScreens();
 
-import Screens from './navigation/Screens';
-import { Images, materialTheme } from './constants/';
+import Screens from "./navigation/Screens";
+import { Images, materialTheme } from "./constants/";
 
 const assetImages = [
   Images.Profile,
@@ -24,7 +24,7 @@ const assetImages = [
   Images.Products.Fragrance,
   Images.Products.BMW,
   Images.Products.Mustang,
-  Images.Products['Harley-Davidson'],
+  Images.Products["Harley-Davidson"],
 ];
 
 // cache product images
@@ -36,8 +36,8 @@ const assetImages = [
 // });
 
 function cacheImages(images) {
-  return images.map(image => {
-    if (typeof image === 'string') {
+  return images.map((image) => {
+    if (typeof image === "string") {
       return Image.prefetch(image);
     } else {
       return Asset.fromModule(image).downloadAsync();
@@ -45,7 +45,11 @@ function cacheImages(images) {
   });
 }
 
-export default class App extends React.Component {
+type Params = {
+  skipLoadingScreen?: boolean;
+};
+
+export default class App extends React.Component<Params> {
   state = {
     isLoadingComplete: false,
   };
@@ -64,7 +68,7 @@ export default class App extends React.Component {
         <NavigationContainer>
           <GalioProvider theme={materialTheme}>
             <Block flex>
-              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              {Platform.OS === "ios" && <StatusBar barStyle="default" />}
               <Screens />
             </Block>
           </GalioProvider>
@@ -74,12 +78,10 @@ export default class App extends React.Component {
   }
 
   _loadResourcesAsync = async () => {
-    return Promise.all([
-      ...cacheImages(assetImages),
-    ]);
+    await Promise.all([...cacheImages(assetImages)]);
   };
 
-  _handleLoadingError = error => {
+  _handleLoadingError = (error) => {
     // In this case, you might want to report the error to your error
     // reporting service, for example Sentry
     console.warn(error);
