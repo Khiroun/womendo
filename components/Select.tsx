@@ -1,21 +1,29 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import ModalDropdown from 'react-native-modal-dropdown';
-import { Block, Text, Icon, theme } from 'galio-framework';
+import React from "react";
+import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import ModalDropdown from "react-native-modal-dropdown";
+import { Block, Text, Icon, theme } from "galio-framework";
 
-import { materialTheme } from '../constants/';
+import { materialTheme } from "../constants/";
 
-export default class DropDown extends React.Component {
+type Props = {
+  onSelect?: (index: number, value: number) => void;
+  style?: StyleProp<ViewStyle>;
+  defaultIndex?: number;
+  options: number[];
+  disabled?: boolean;
+};
+
+export default class DropDown extends React.Component<Props> {
   state = {
     value: 1,
-  }
+  };
 
   handleOnSelect = (index, value) => {
     const { onSelect } = this.props;
 
     this.setState({ value: value });
     onSelect && onSelect(index, value);
-  }
+  };
 
   render() {
     const { onSelect, style, ...props } = this.props;
@@ -25,13 +33,14 @@ export default class DropDown extends React.Component {
         onSelect={this.handleOnSelect}
         dropdownStyle={styles.dropdown}
         dropdownTextStyle={{ paddingLeft: theme.SIZES.BASE, fontSize: 12 }}
-        {...props}>
+        {...props}
+      >
         <Block flex row middle space="between">
           <Text size={12}>{this.state.value}</Text>
           <Icon name="angle-down" family="font-awesome" size={11} />
         </Block>
       </ModalDropdown>
-    )
+    );
   }
 }
 

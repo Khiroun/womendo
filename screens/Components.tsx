@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -6,42 +6,52 @@ import {
   TouchableWithoutFeedback,
   Image,
   ImageBackground,
-  Dimensions
-} from 'react-native';
-import { Button, Block, Text, Input, theme } from 'galio-framework';
+  Dimensions,
+} from "react-native";
+import { Button, Block, Text, Input, theme } from "galio-framework";
 
-import { materialTheme, products, Images, tabs } from '../constants/';
-import { Select, Icon, Header, Product, Switch, Tabs } from '../components/';
+import { materialTheme, products, Images, tabs } from "../constants/";
+import { Select, Icon, Header, Product, Switch } from "../components/";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/Screens";
 
-const { width } = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 
 const thumbMeasure = (width - 48 - 32) / 3;
-const cardWidth = width - (theme.SIZES.BASE * 2);
+const cardWidth = width - theme.SIZES.BASE * 2;
 const categories = [
   {
-    title: 'Flower',
-    description: 'Using plant materials and flowers to create a pleasing composition.',
-    image: 'https://images.unsplash.com/photo-1507290439931-a861b5a38200?fit=crop&w=840&q=80'
+    title: "Flower",
+    description:
+      "Using plant materials and flowers to create a pleasing composition.",
+    image:
+      "https://images.unsplash.com/photo-1507290439931-a861b5a38200?fit=crop&w=840&q=80",
   },
   {
-    title: 'Shower',
-    description: 'Put personal touch on your bathroom with stylish shower accessories.',
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?fit=crop&w=840&q=80'
+    title: "Shower",
+    description:
+      "Put personal touch on your bathroom with stylish shower accessories.",
+    image:
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?fit=crop&w=840&q=80",
   },
   {
-    title: 'Candle',
-    description: 'Decorative candleholders, shaped as a pedestal, are called candlesticks.',
-    image: 'https://images.unsplash.com/photo-1536942338469-91c7022e55a7?fit=crop&w=840&q=80'
+    title: "Candle",
+    description:
+      "Decorative candleholders, shaped as a pedestal, are called candlesticks.",
+    image:
+      "https://images.unsplash.com/photo-1536942338469-91c7022e55a7?fit=crop&w=840&q=80",
   },
 ];
+type Props = StackScreenProps<RootStackParamList, "Components">;
 
-export default class Components extends React.Component {
+export default class Components extends React.Component<Props> {
   state = {
-    'switch-1': true,
-    'switch-2': false,
+    "switch-1": true,
+    "switch-2": false,
   };
 
-  toggleSwitch = switchId => this.setState({ [switchId]: !this.state[switchId] });
+  toggleSwitch = (switchId) =>
+    this.setState({ [switchId]: !this.state[switchId] });
 
   renderProduct = (item, index) => {
     const { navigation } = this.props;
@@ -50,44 +60,87 @@ export default class Components extends React.Component {
       <TouchableWithoutFeedback
         style={{ zIndex: 3 }}
         key={`product-${item.title}`}
-        onPress={() => navigation.navigate('Pro', { product: item })}>
+        onPress={() => navigation.navigate("Product", { product: item })}
+      >
         <Block center style={styles.productItem}>
-          <Image resizeMode='cover' style={styles.productImage} source={{ uri: item.image }} />
+          <Image
+            resizeMode="cover"
+            style={styles.productImage}
+            source={{ uri: item.image }}
+          />
           <Block center style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <Text center size={16} color={theme.COLORS.MUTED} style={styles.productPrice}>$125</Text>
-            <Text center size={34}>{item.title}</Text>
-            <Text center size={16} color={theme.COLORS.MUTED} style={styles.productDescription}>{item.description}</Text>
+            <Text
+              center
+              size={16}
+              color={theme.COLORS.MUTED}
+              style={styles.productPrice}
+            >
+              $125
+            </Text>
+            <Text center size={34}>
+              {item.title}
+            </Text>
+            <Text
+              center
+              size={16}
+              color={theme.COLORS.MUTED}
+              style={styles.productDescription}
+            >
+              {item.description}
+            </Text>
           </Block>
         </Block>
       </TouchableWithoutFeedback>
-    )
+    );
   };
 
   renderButtons = () => {
     return (
       <Block flex>
-        <Text bold size={16} style={styles.title}>Buttons</Text>
+        <Text bold size={16} style={styles.title}>
+          Buttons
+        </Text>
         <Block style={{ paddingHorizontal: 16 }}>
-          <Button shadowless color={materialTheme.COLORS.DEFAULT} style={[styles.button, styles.shadow]}>
+          <Button
+            shadowless
+            color={materialTheme.COLORS.DEFAULT}
+            style={[styles.button, styles.shadow]}
+          >
             DEFAULT
           </Button>
           <Button shadowless style={[styles.button, styles.shadow]}>
             PRIMARY
           </Button>
-          <Button shadowless color="info" style={[styles.button, styles.shadow]}>
+          <Button
+            shadowless
+            color="info"
+            style={[styles.button, styles.shadow]}
+          >
             INFO
           </Button>
-          <Button shadowless color="success" style={[styles.button, styles.shadow]}>
+          <Button
+            shadowless
+            color="success"
+            style={[styles.button, styles.shadow]}
+          >
             SUCCESS
           </Button>
-          <Button shadowless color="warning" style={[styles.button, styles.shadow]}>
+          <Button
+            shadowless
+            color="warning"
+            style={[styles.button, styles.shadow]}
+          >
             WARNING
           </Button>
-          <Button shadowless color="danger" style={[styles.button, styles.shadow]}>
+          <Button
+            shadowless
+            color="danger"
+            style={[styles.button, styles.shadow]}
+          >
             ERROR
           </Button>
           <Block row space="evenly">
-            <Block flex left style={{marginTop: 8, marginLeft: 10}}>
+            <Block flex left style={{ marginTop: 8, marginLeft: 10 }}>
               <Select
                 defaultIndex={1}
                 options={[1, 2, 3, 4, 5]}
@@ -100,7 +153,8 @@ export default class Components extends React.Component {
                 shadowless
                 color={materialTheme.COLORS.DEFAULT}
                 textStyle={styles.optionsText}
-                style={[styles.optionsButton, styles.shadow]}>
+                style={[styles.optionsButton, styles.shadow]}
+              >
                 DELETE
               </Button>
             </Block>
@@ -110,37 +164,54 @@ export default class Components extends React.Component {
                 shadowless
                 color={materialTheme.COLORS.DEFAULT}
                 textStyle={styles.optionsText}
-                style={[styles.optionsButton, styles.shadow]}>
+                style={[styles.optionsButton, styles.shadow]}
+              >
                 SAVE FOR LATER
               </Button>
             </Block>
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderText = () => {
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>Typography</Text>
+        <Text bold size={16} style={styles.title}>
+          Typography
+        </Text>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Text h1 style={{ marginBottom: theme.SIZES.BASE / 2 }}>Heading 1</Text>
-          <Text h2 style={{ marginBottom: theme.SIZES.BASE / 2 }}>Heading 2</Text>
-          <Text h3 style={{ marginBottom: theme.SIZES.BASE / 2 }}>Heading 3</Text>
-          <Text h4 style={{ marginBottom: theme.SIZES.BASE / 2 }}>Heading 4</Text>
-          <Text h5 style={{ marginBottom: theme.SIZES.BASE / 2 }}>Heading 5</Text>
-          <Text p style={{ marginBottom: theme.SIZES.BASE / 2 }}>Paragraph</Text>
+          <Text h1 style={{ marginBottom: theme.SIZES.BASE / 2 }}>
+            Heading 1
+          </Text>
+          <Text h2 style={{ marginBottom: theme.SIZES.BASE / 2 }}>
+            Heading 2
+          </Text>
+          <Text h3 style={{ marginBottom: theme.SIZES.BASE / 2 }}>
+            Heading 3
+          </Text>
+          <Text h4 style={{ marginBottom: theme.SIZES.BASE / 2 }}>
+            Heading 4
+          </Text>
+          <Text h5 style={{ marginBottom: theme.SIZES.BASE / 2 }}>
+            Heading 5
+          </Text>
+          <Text p style={{ marginBottom: theme.SIZES.BASE / 2 }}>
+            Paragraph
+          </Text>
           <Text muted>This is a muted paragraph.</Text>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderInputs = () => {
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>Inputs</Text>
+        <Text bold size={16} style={styles.title}>
+          Inputs
+        </Text>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Input
             borderless
@@ -210,7 +281,14 @@ export default class Components extends React.Component {
             placeholder="icon right"
             placeholderTextColor={materialTheme.COLORS.DEFAULT}
             style={{ borderRadius: 3, borderColor: materialTheme.COLORS.INPUT }}
-            iconContent={<Icon size={16} color={theme.COLORS.ICON} name="camera-18" family="GalioExtra" />}
+            iconContent={
+              <Icon
+                size={16}
+                color={theme.COLORS.ICON}
+                name="camera-18"
+                family="GalioExtra"
+              />
+            }
           />
 
           <Input
@@ -219,66 +297,84 @@ export default class Components extends React.Component {
             style={{ borderRadius: 3 }}
             placeholderTextColor={materialTheme.COLORS.DEFAULT}
           />
-
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderSwitches = () => {
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>Switches</Text>
+        <Text bold size={16} style={styles.title}>
+          Switches
+        </Text>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
+          <Block
+            row
+            middle
+            space="between"
+            style={{ marginBottom: theme.SIZES.BASE }}
+          >
             <Text size={14}>Switch is ON</Text>
             <Switch
-              value={this.state['switch-1']}
-              onValueChange={() => this.toggleSwitch('switch-1')}
+              value={this.state["switch-1"]}
+              onValueChange={() => this.toggleSwitch("switch-1")}
             />
           </Block>
           <Block row middle space="between">
             <Text size={14}>Switch is OFF</Text>
             <Switch
-              value={this.state['switch-2']}
-              onValueChange={() => this.toggleSwitch('switch-2')}
+              value={this.state["switch-2"]}
+              onValueChange={() => this.toggleSwitch("switch-2")}
             />
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderTableCell = () => {
     const { navigation } = this.props;
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>Table Cell</Text>
+        <Text bold size={16} style={styles.title}>
+          Table Cell
+        </Text>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Block style={styles.rows}>
-            <TouchableOpacity onPress={() => navigation.navigate('Pro')}>
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
               <Block row middle space="between" style={{ paddingTop: 7 }}>
                 <Text size={14}>Manage Options</Text>
-                <Icon name="angle-right" family="font-awesome" style={{ paddingRight: 5 }} />
+                <Icon
+                  name="angle-right"
+                  family="font-awesome"
+                  style={{ paddingRight: 5 }}
+                />
               </Block>
             </TouchableOpacity>
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderNavigation = () => {
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>Navigation</Text>
+        <Text bold size={16} style={styles.title}>
+          Navigation
+        </Text>
         <Block>
           <Block style={{ marginBottom: theme.SIZES.BASE }}>
             <Header back title="Title" navigation={this.props.navigation} />
           </Block>
 
           <Block style={{ marginBottom: theme.SIZES.BASE }}>
-            <Header tabs={tabs.categories} title="Title" navigation={this.props.navigation} />
+            <Header
+              tabs={tabs.categories}
+              title="Title"
+              navigation={this.props.navigation}
+            />
           </Block>
 
           <Block style={{ marginBottom: theme.SIZES.BASE }}>
@@ -292,18 +388,26 @@ export default class Components extends React.Component {
               title="Title"
               optionLeft="Option 1"
               optionRight="Option 2"
-              navigation={this.props.navigation} />
+              navigation={this.props.navigation}
+            />
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderSocial = () => {
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>Social</Text>
-        <Block style={{ paddingHorizontal: theme.SIZES.BASE, marginTop: theme.SIZES.BASE }}>
+        <Text bold size={16} style={styles.title}>
+          Social
+        </Text>
+        <Block
+          style={{
+            paddingHorizontal: theme.SIZES.BASE,
+            marginTop: theme.SIZES.BASE,
+          }}
+        >
           <Block row center space="between">
             <Block flex middle right>
               <Button
@@ -347,29 +451,79 @@ export default class Components extends React.Component {
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderCards = () => {
     return (
       <Block flex style={styles.group}>
-        <Text bold size={16} style={styles.title}>Cards</Text>
+        <Text bold size={16} style={styles.title}>
+          Cards
+        </Text>
         <Block flex>
           <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <Product product={products[0]} horizontal />
+            <Product
+              product={products[0]}
+              horizontal
+              goToProduct={() =>
+                this.props.navigation.navigate("Product", {
+                  product: products[0],
+                })
+              }
+            />
             <Block flex row>
-              <Product product={products[1]} style={{ marginRight: theme.SIZES.BASE }} />
-              <Product product={products[2]} />
+              <Product
+                product={products[1]}
+                style={{ marginRight: theme.SIZES.BASE }}
+                goToProduct={() =>
+                  this.props.navigation.navigate("Product", {
+                    product: products[1],
+                  })
+                }
+              />
+              <Product
+                product={products[2]}
+                goToProduct={() =>
+                  this.props.navigation.navigate("Product", {
+                    product: products[2],
+                  })
+                }
+              />
             </Block>
-            <Product product={products[3]} horizontal />
-            <Product product={products[4]} full />
+            <Product
+              product={products[3]}
+              horizontal
+              goToProduct={() =>
+                this.props.navigation.navigate("Product", {
+                  product: products[3],
+                })
+              }
+            />
+            <Product
+              product={products[4]}
+              full
+              goToProduct={() =>
+                this.props.navigation.navigate("Product", {
+                  product: products[4],
+                })
+              }
+            />
             <Block flex card shadow style={styles.category}>
               <ImageBackground
-                source={{ uri: Images.Products['Accessories'] }}
-                style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 252 }]}
-                imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 252 }}>
+                source={{ uri: Images.Products["Accessories"] }}
+                style={[
+                  styles.imageBlock,
+                  { width: width - theme.SIZES.BASE * 2, height: 252 },
+                ]}
+                imageStyle={{
+                  width: width - theme.SIZES.BASE * 2,
+                  height: 252,
+                }}
+              >
                 <Block style={styles.categoryTitle}>
-                  <Text size={18} bold color={theme.COLORS.WHITE}>Accessories</Text>
+                  <Text size={18} bold color={theme.COLORS.WHITE}>
+                    Accessories
+                  </Text>
                 </Block>
               </ImageBackground>
             </Block>
@@ -381,35 +535,50 @@ export default class Components extends React.Component {
               decelerationRate={0}
               scrollEventThrottle={16}
               snapToAlignment="center"
-              style={{width}}
+              style={{ width }}
               showsHorizontalScrollIndicator={false}
-              snapToInterval={cardWidth + (theme.SIZES.BASE * 0.375)}
-              contentContainerStyle={{ paddingHorizontal: theme.SIZES.BASE / 2 }}
+              snapToInterval={cardWidth + theme.SIZES.BASE * 0.375}
+              contentContainerStyle={{
+                paddingHorizontal: theme.SIZES.BASE / 2,
+              }}
             >
-              {categories && categories.map((item, index) => this.renderProduct(item, index))}
+              {categories &&
+                categories.map((item, index) =>
+                  this.renderProduct(item, index)
+                )}
             </ScrollView>
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderAlbum = () => {
     const { navigation } = this.props;
 
     return (
-      <Block flex style={[styles.group, { paddingBottom: theme.SIZES.BASE * 5 }]}>
-        <Text bold size={16} style={styles.title}>Album</Text>
+      <Block
+        flex
+        style={[styles.group, { paddingBottom: theme.SIZES.BASE * 5 }]}
+      >
+        <Text bold size={16} style={styles.title}>
+          Album
+        </Text>
         <Block style={{ marginHorizontal: theme.SIZES.BASE * 2 }}>
           <Block flex right>
             <Text
               size={12}
               color={theme.COLORS.PRIMARY}
-              onPress={() => navigation.navigate('Home')}>
+              onPress={() => navigation.navigate("Home")}
+            >
               View All
             </Text>
           </Block>
-          <Block row space="between" style={{ marginTop: theme.SIZES.BASE, flexWrap: 'wrap' }} >
+          <Block
+            row
+            space="between"
+            style={{ marginTop: theme.SIZES.BASE, flexWrap: "wrap" }}
+          >
             {Images.Viewed.map((img, index) => (
               <Block key={`viewed-${img}`} style={styles.shadow}>
                 <Image
@@ -422,15 +591,16 @@ export default class Components extends React.Component {
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   render() {
     return (
       <Block flex>
         <ScrollView
           style={styles.components}
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+        >
           {this.renderButtons()}
           {this.renderText()}
           {this.renderInputs()}
@@ -458,7 +628,7 @@ const styles = StyleSheet.create({
     paddingTop: theme.SIZES.BASE * 3.75,
   },
   shadow: {
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     shadowOpacity: 0.2,
@@ -466,20 +636,20 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: theme.SIZES.BASE,
-    width: width - (theme.SIZES.BASE * 3),
+    width: width - theme.SIZES.BASE * 3,
   },
   options: {
     paddingHorizontal: theme.SIZES.BASE / 2,
   },
   optionsText: {
     fontSize: theme.SIZES.BASE * 0.75,
-    color: '#4a4a4a',
+    color: "#4a4a4a",
     fontWeight: "normal",
     fontStyle: "normal",
     letterSpacing: -0.29,
   },
   optionsButton: {
-    width: 'auto',
+    width: "auto",
     height: 34,
     paddingHorizontal: theme.SIZES.BASE,
     paddingVertical: 10,
@@ -489,9 +659,6 @@ const styles = StyleSheet.create({
   },
   inputDefault: {
     borderBottomColor: materialTheme.COLORS.PLACEHOLDER,
-  },
-  inputTheme: {
-    borderBottomColor: materialTheme.COLORS.PRIMARY,
   },
   inputTheme: {
     borderBottomColor: materialTheme.COLORS.PRIMARY,
@@ -509,7 +676,7 @@ const styles = StyleSheet.create({
     borderBottomColor: materialTheme.COLORS.ERROR,
   },
   imageBlock: {
-    overflow: 'hidden',
+    overflow: "hidden",
     borderRadius: 4,
   },
   rows: {
@@ -519,7 +686,7 @@ const styles = StyleSheet.create({
     width: theme.SIZES.BASE * 3.5,
     height: theme.SIZES.BASE * 3.5,
     borderRadius: theme.SIZES.BASE * 1.75,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   category: {
     backgroundColor: theme.COLORS.WHITE,
@@ -527,16 +694,16 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   categoryTitle: {
-    height: '100%',
+    height: "100%",
     paddingHorizontal: theme.SIZES.BASE,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   productItem: {
     width: cardWidth - theme.SIZES.BASE * 2,
     marginHorizontal: theme.SIZES.BASE,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 10,
     shadowOpacity: 0.2,
@@ -557,8 +724,8 @@ const styles = StyleSheet.create({
   albumThumb: {
     borderRadius: 4,
     marginVertical: 4,
-    alignSelf: 'center',
+    alignSelf: "center",
     width: thumbMeasure,
-    height: thumbMeasure
+    height: thumbMeasure,
   },
 });

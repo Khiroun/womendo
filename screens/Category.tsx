@@ -1,51 +1,92 @@
-import React from 'react';
-import { Image, StyleSheet, ScrollView, Dimensions, TouchableWithoutFeedback } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import React from "react";
+import {
+  Image,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { Block, Text, theme } from "galio-framework";
 
-import { Product } from '../components/';
+import { Product } from "../components/";
 
-import categories from '../constants/images/categories';
+import categories from "../constants/images/categories";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/Screens";
 
-const { width, height } = Dimensions.get('window');
-const cardWidth = width - (theme.SIZES.BASE * 2);
+const { width } = Dimensions.get("window");
+const cardWidth = width - theme.SIZES.BASE * 2;
+type Props = StackScreenProps<RootStackParamList, "Category">;
 
-export default class Category extends React.Component {
+export default class Category extends React.Component<Props> {
   renderSuggestions = () => {
     const { navigation, route } = this.props;
     // const { params } = navigation && navigation.state;
     const category = categories[route.params?.id];
     const suggestions = category && category.suggestions;
-    
+
     if (!suggestions) return null;
 
     return (
       <React.Fragment>
-        <Product product={suggestions[0]} style={{ marginRight: theme.SIZES.BASE }} />
-        <Product product={suggestions[1]} />
+        <Product
+          product={suggestions[0]}
+          style={{ marginRight: theme.SIZES.BASE }}
+          goToProduct={() =>
+            this.props.navigation.navigate("Product", {
+              product: suggestions[0],
+            })
+          }
+        />
+        <Product
+          product={suggestions[1]}
+          goToProduct={() =>
+            this.props.navigation.navigate("Product", {
+              product: suggestions[1],
+            })
+          }
+        />
       </React.Fragment>
-    )
-  }
+    );
+  };
 
   renderProduct = (item, index) => {
     const { navigation } = this.props;
     return (
       <TouchableWithoutFeedback
         key={`product-${item.title}`}
-        onPress={() => navigation.navigate('Product', { product: item })}>
+        onPress={() => navigation.navigate("Product", { product: item })}
+      >
         <Block flex style={styles.product}>
           <Image
-            resizeMode='cover'
+            resizeMode="cover"
             style={styles.image}
             source={{ uri: item.image }}
           />
           <Block center style={{ paddingHorizontal: theme.SIZES.BASE }}>
-            <Text center size={16} color={theme.COLORS.MUTED} style={styles.price}>$125</Text>
-            <Text center size={34}>{item.title}</Text>
-            <Text center size={16} color={theme.COLORS.MUTED} style={styles.description}>{item.description}</Text>
+            <Text
+              center
+              size={16}
+              color={theme.COLORS.MUTED}
+              style={styles.price}
+            >
+              $125
+            </Text>
+            <Text center size={34}>
+              {item.title}
+            </Text>
+            <Text
+              center
+              size={16}
+              color={theme.COLORS.MUTED}
+              style={styles.description}
+            >
+              {item.description}
+            </Text>
           </Block>
         </Block>
       </TouchableWithoutFeedback>
-    )
+    );
   };
 
   render() {
@@ -55,7 +96,10 @@ export default class Category extends React.Component {
 
     return (
       <Block flex>
-        <ScrollView scrollEventThrottle={16} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
+        >
           <Block flex={3}>
             <ScrollView
               horizontal={true}
@@ -64,10 +108,13 @@ export default class Category extends React.Component {
               scrollEventThrottle={16}
               snapToAlignment="center"
               showsHorizontalScrollIndicator={false}
-              snapToInterval={cardWidth + (theme.SIZES.BASE * 0.375)}
+              snapToInterval={cardWidth + theme.SIZES.BASE * 0.375}
               contentContainerStyle={{ paddingRight: theme.SIZES.BASE }}
-              >
-              {category && category.images.map((item, index) => this.renderProduct(item, index))}
+            >
+              {category &&
+                category.images.map((item, index) =>
+                  this.renderProduct(item, index)
+                )}
             </ScrollView>
           </Block>
           <Block flex row style={{ marginHorizontal: theme.SIZES.BASE }}>
@@ -84,7 +131,7 @@ const styles = StyleSheet.create({
     width: cardWidth - theme.SIZES.BASE * 2,
     marginHorizontal: theme.SIZES.BASE,
     marginTop: theme.SIZES.BASE * 2,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 10,
     shadowOpacity: 0.2,
@@ -95,9 +142,9 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   imageVertical: {
-    overflow: 'hidden',
+    overflow: "hidden",
     borderTopRightRadius: 4,
-    borderTopLeftRadius: 4
+    borderTopLeftRadius: 4,
   },
   price: {
     paddingTop: theme.SIZES.BASE,
@@ -116,7 +163,7 @@ const styles = StyleSheet.create({
   },
   suggestionTitle: {
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     paddingBottom: 6,
   },
   suggestionDescription: {

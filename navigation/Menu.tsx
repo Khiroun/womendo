@@ -3,36 +3,37 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   StyleSheet,
-  Dimensions,
   Image,
-  TouchableOpacity,
-  ListView
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
-import { useSafeArea } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Icon, Drawer as DrawerCustomItem } from "../components/";
-import { Images, materialTheme } from "../constants/";
+import { materialTheme } from "../constants/";
+import NavigationProp from "./NavigationProp";
 
-const { width } = Dimensions.get("screen");
-
-const profile = {
-  avatar: Images.Profile,
-  name: "Rachel Brown",
-  type: "Seller",
-  plan: "Pro",
-  rating: 4.8
+type Props = {
+  drawerPosition?: "left" | "right";
+  navigation?: NavigationProp;
+  profile?: {
+    avatar?: string;
+    name?: string;
+    plan?: string;
+    type?: string;
+    rating?: number;
+  };
+  state?: {
+    index?: number;
+  };
 };
 
-function CustomDrawerContent({
+const CustomDrawerContent: React.FC<Props> = ({
   drawerPosition,
   navigation,
   profile,
-  focused,
   state,
-  ...rest
-}) {
-  const insets = useSafeArea();
+}) => {
+  const insets = useSafeAreaInsets();
   const screens = [
     "Home",
     "Woman",
@@ -41,7 +42,7 @@ function CustomDrawerContent({
     "New Collection",
     "Profile",
     "Settings",
-    "Components"
+    "Components",
   ];
   return (
     <Block
@@ -80,8 +81,8 @@ function CustomDrawerContent({
             {
               paddingTop: insets.top * 0.4,
               paddingLeft: drawerPosition === "left" ? insets.left : 0,
-              paddingRight: drawerPosition === "right" ? insets.right : 0
-            }
+              paddingRight: drawerPosition === "right" ? insets.right : 0,
+            },
           ]}
           showsVerticalScrollIndicator={false}
         >
@@ -111,31 +112,31 @@ function CustomDrawerContent({
       </Block>
     </Block>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   header: {
     backgroundColor: "#4B1958",
     paddingHorizontal: 28,
     paddingBottom: theme.SIZES.BASE,
     paddingTop: theme.SIZES.BASE * 2,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   footer: {
     paddingHorizontal: 28,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   profile: {
-    marginBottom: theme.SIZES.BASE / 2
+    marginBottom: theme.SIZES.BASE / 2,
   },
   avatar: {
     height: 40,
     width: 40,
     borderRadius: 20,
-    marginBottom: theme.SIZES.BASE
+    marginBottom: theme.SIZES.BASE,
   },
   pro: {
     backgroundColor: materialTheme.COLORS.LABEL,
@@ -143,10 +144,10 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 4,
     height: 19,
-    width: 38
+    width: 38,
   },
   seller: {
-    marginRight: 16
+    marginRight: 16,
   },
 });
 

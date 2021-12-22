@@ -1,13 +1,14 @@
-export default tabs = {
+const tabs = {
   categories: [
-    { id: 'popular', title: 'POPULAR' },
-    { id: 'beauty', title: 'BEAUTY' },
-    { id: 'car_motorcycle', title: 'CAR & MOTORCYCLE' },
+    { id: "popular", title: "POPULAR" },
+    { id: "beauty", title: "BEAUTY" },
+    { id: "car_motorcycle", title: "CAR & MOTORCYCLE" },
   ],
   deals: [
-    { id: 'popular', title: 'POPULAR', },
-    { id: 'beauty', title: 'BEAUTY', },
-    { id: 'cars', title: 'CARS', },
-    { id: 'motocycles', title: 'MOTOCYCLES', },
+    { id: "popular", title: "POPULAR" },
+    { id: "beauty", title: "BEAUTY" },
+    { id: "cars", title: "CARS" },
+    { id: "motocycles", title: "MOTOCYCLES" },
   ],
-}
+};
+export default tabs;

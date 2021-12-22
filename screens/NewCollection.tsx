@@ -1,16 +1,27 @@
-import React from 'react';
-import { StyleSheet, Dimensions, ScrollView } from 'react-native';
-import { Button, Block, Text, Input, theme } from 'galio-framework';
+import React from "react";
+import { StyleSheet, Dimensions, ScrollView } from "react-native";
+import { Button, Block, Text, Input, theme } from "galio-framework";
 
-import { Icon, Product } from '../components/';
+import { Icon, Product } from "../components/";
 
-const { width } = Dimensions.get('screen');
-import newcollectionImages from '../constants/images/newcollection';
+const { width } = Dimensions.get("screen");
+import newcollectionImages from "../constants/images/newcollection";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/Screens";
+const products = newcollectionImages;
+type Props = StackScreenProps<RootStackParamList, "NewCollection">;
 
-export default class NewCollection extends React.Component {
+export default class NewCollection extends React.Component<Props> {
   renderSearch = () => {
     const { navigation } = this.props;
-    const iconContent = <Icon size={16} color={theme.COLORS.MUTED} name="zoom-in" family="material" />
+    const iconContent = (
+      <Icon
+        size={16}
+        color={theme.COLORS.MUTED}
+        name="zoom-in"
+        family="material"
+      />
+    );
 
     return (
       <Input
@@ -19,49 +30,106 @@ export default class NewCollection extends React.Component {
         style={styles.search}
         iconContent={iconContent}
         placeholder="What are you looking for?"
-        onFocus={() => navigation.navigate('Search')}
+        onFocus={() => navigation.navigate("Search")}
       />
-    )
-  }
-  
+    );
+  };
+
   renderTabs = () => {
     const { navigation } = this.props;
 
     return (
       <Block row style={styles.tabs}>
-        <Button shadowless style={[styles.tab, styles.divider]} onPress={() => navigation.navigate('Categories')}>
+        <Button
+          shadowless
+          style={[styles.tab, styles.divider]}
+          onPress={() => navigation.navigate("Categories")}
+        >
           <Block row middle>
             <Icon name="grid" family="feather" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>Categories</Text>
+            <Text size={16} style={styles.tabTitle}>
+              Categories
+            </Text>
           </Block>
         </Button>
-        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Deals')}>
+        <Button
+          shadowless
+          style={styles.tab}
+          onPress={() => navigation.navigate("Deals")}
+        >
           <Block row middle>
-            <Icon size={16} name="camera-18" family="GalioExtra" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>Best Deals</Text>
+            <Icon
+              size={16}
+              name="camera-18"
+              family="GalioExtra"
+              style={{ paddingRight: 8 }}
+            />
+            <Text size={16} style={styles.tabTitle}>
+              Best Deals
+            </Text>
           </Block>
         </Button>
       </Block>
-    )
-  }
+    );
+  };
 
   renderProducts = () => {
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.products}>
+        contentContainerStyle={styles.products}
+      >
         <Block flex>
-          <Product product={newcollectionImages[0]} horizontal />
+          <Product
+            product={newcollectionImages[0]}
+            horizontal
+            goToProduct={() =>
+              this.props.navigation.navigate("Product", {
+                product: products[0],
+              })
+            }
+          />
           <Block flex row>
-            <Product product={newcollectionImages[1]} style={{ marginRight: theme.SIZES.BASE }} />
-            <Product product={newcollectionImages[2]} />
+            <Product
+              product={newcollectionImages[1]}
+              style={{ marginRight: theme.SIZES.BASE }}
+              goToProduct={() =>
+                this.props.navigation.navigate("Product", {
+                  product: products[1],
+                })
+              }
+            />
+            <Product
+              product={newcollectionImages[2]}
+              goToProduct={() =>
+                this.props.navigation.navigate("Product", {
+                  product: products[2],
+                })
+              }
+            />
           </Block>
-          <Product product={newcollectionImages[3]} horizontal />
-          <Product product={newcollectionImages[4]} full />
+          <Product
+            product={newcollectionImages[3]}
+            horizontal
+            goToProduct={() =>
+              this.props.navigation.navigate("Product", {
+                product: products[3],
+              })
+            }
+          />
+          <Product
+            product={newcollectionImages[4]}
+            full
+            goToProduct={() =>
+              this.props.navigation.navigate("Product", {
+                product: products[4],
+              })
+            }
+          />
         </Block>
       </ScrollView>
-    )
-  }
+    );
+  };
 
   render() {
     return (
@@ -74,7 +142,7 @@ export default class NewCollection extends React.Component {
 
 const styles = StyleSheet.create({
   home: {
-    width: width,    
+    width: width,
   },
   search: {
     height: 48,
@@ -88,7 +156,7 @@ const styles = StyleSheet.create({
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowRadius: 8,
     shadowOpacity: 0.2,
@@ -102,7 +170,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     backgroundColor: theme.COLORS.TRANSPARENT,
-    width: width * 0.50,
+    width: width * 0.5,
     borderRadius: 0,
     borderWidth: 0,
     height: 24,
@@ -110,7 +178,7 @@ const styles = StyleSheet.create({
   },
   tabTitle: {
     lineHeight: 19,
-    fontWeight: '300'
+    fontWeight: "300",
   },
   divider: {
     borderRightWidth: 0.3,

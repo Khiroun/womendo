@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Image,
@@ -7,16 +7,18 @@ import {
   ScrollView,
   FlatList,
   KeyboardAvoidingView,
-} from 'react-native';
+} from "react-native";
 
-import { LinearGradient } from 'expo-linear-gradient';
-import { Input, Block, Text, Button, theme } from 'galio-framework';
-import { Icon } from '../components/';
+import { LinearGradient } from "expo-linear-gradient";
+import { Input, Block, Text, Button, theme } from "galio-framework";
+import { Icon } from "../components/";
 
 import Images from "../constants/Images";
-import materialTheme from '../constants/Theme';
+import materialTheme from "../constants/Theme";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/Screens";
 
-const { width } = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 const messages = [
   {
     id: 1,
@@ -41,33 +43,36 @@ const messages = [
     time: `10:36 PM`,
   },
 ];
+type Props = StackScreenProps<RootStackParamList, "Chat">;
 
-export default class Chat extends React.Component {
+export default class Chat extends React.Component<Props> {
   state = {
     messages: messages,
-    height: 0
+    height: 0,
+    message: null,
   };
 
-  messagesScroll = React.createRef();
+  messagesScroll = React.createRef<FlatList>();
 
-  itemLayout = (data, index) => (
-    { length: (this.state.messages.length - 1), offset: 32 * index, index }
-  )
+  itemLayout = (data, index) => ({
+    length: this.state.messages.length - 1,
+    offset: 32 * index,
+    index,
+  });
 
   handleScroll = () => {
     // const totalIndex = this.state.messages.length - 1;
     // const insetBottom = this.state.messages.length * (theme.SIZES.BASE * 6.5) + 64; // total messages x message height
     setTimeout(() => {
-        this.messagesScroll.current.scrollToOffset({ offset: this.state.height });
+      this.messagesScroll.current.scrollToOffset({ offset: this.state.height });
     }, 1);
-    
-  }
+  };
 
-  onContentSizeChange = (width,height) => {
+  onContentSizeChange = (width, height) => {
     this.setState({
-      height
+      height,
     });
-  }
+  };
 
   componentDidMount() {
     // this.handleScroll();
@@ -76,49 +81,55 @@ export default class Chat extends React.Component {
   renderMessage = (msg) => {
     return (
       <Block key={msg.id}>
-        <Block row space={!msg.avatar? 'between' : null}>
-          <Image source={{ uri: msg.avatar }} style={[styles.avatar, styles.shadow]} />
+        <Block row space={!msg.avatar ? "between" : null}>
+          <Image
+            source={{ uri: msg.avatar }}
+            style={[styles.avatar, styles.shadow]}
+          />
           <Block style={styles.messageCardWrapper}>
-            {msg.avatar ?
+            {msg.avatar ? (
               <Block style={[styles.messageCard, styles.shadow]}>
                 <Text>{msg.message}</Text>
-              </Block> :
+              </Block>
+            ) : (
               <LinearGradient
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                colors={['#6C24AA', '#AC2688']}
-                style={[styles.messageCard, styles.shadow]}>              
+                colors={["#6C24AA", "#AC2688"]}
+                style={[styles.messageCard, styles.shadow]}
+              >
                 <Text color={theme.COLORS.WHITE}>{msg.message}</Text>
               </LinearGradient>
-            }
+            )}
             <Block right>
               <Text style={styles.time}>{msg.time}</Text>
             </Block>
           </Block>
         </Block>
       </Block>
-    )
-  }
+    );
+  };
 
   renderMessages = () => {
-    const insetBottom = this.state.messages.length * (theme.SIZES.BASE * 6.5) + 64; // total messages x message height
+    const insetBottom =
+      this.state.messages.length * (theme.SIZES.BASE * 6.5) + 64; // total messages x message height
     return (
       <FlatList
         ref={this.messagesScroll}
         data={this.state.messages}
-        keyExtractor={item => `${item.id}`}
+        keyExtractor={(item) => `${item.id}`}
         showsVerticalScrollIndicator={false}
         getItemLayout={this.itemLayout}
         contentContainerStyle={[styles.messagesWrapper]}
         renderItem={({ item }) => this.renderMessage(item)}
         onContentSizeChange={this.onContentSizeChange}
       />
-    )
-  }
+    );
+  };
 
   handleMessageChange = (type, text) => {
     this.setState({ message: text });
-  }
+  };
 
   handleMessage = () => {
     const { messages, message } = this.state;
@@ -127,19 +138,22 @@ export default class Chat extends React.Component {
     messages.push({
       id: messages.length + 1,
       message: message,
-      time: date.toLocaleString('en-US', { hour: '2-digit', minute: 'numeric' }),
+      time: date.toLocaleString("en-US", {
+        hour: "2-digit",
+        minute: "numeric",
+      }),
     });
 
-    this.setState({ messages, message: '' });
+    this.setState({ messages, message: "" });
     this.handleScroll();
-  }
+  };
 
   messageForm = () => {
     const { navigation } = this.props;
-    
+
     return (
       <View style={styles.messageFormContainer}>
-        <Block flex row middle space="between" >
+        <Block flex row middle space="between">
           <Button
             round
             shadowless
@@ -147,8 +161,14 @@ export default class Chat extends React.Component {
             opacity={0.9}
             style={styles.iconButton}
             color={materialTheme.COLORS.BUTTON_COLOR}
-            onPress={() => navigation.navigate('Chat')}>
-            <Icon size={16} name="camera-18" family="GalioExtra" color={theme.COLORS.MUTED} />
+            onPress={() => navigation.navigate("Chat")}
+          >
+            <Icon
+              size={16}
+              name="camera-18"
+              family="GalioExtra"
+              color={theme.COLORS.MUTED}
+            />
           </Button>
           <Input
             borderless
@@ -163,12 +183,12 @@ export default class Chat extends React.Component {
             placeholderTextColor="#9fa5aa"
             defaultValue={this.state.message}
             onSubmitEditing={this.handleMessage}
-            onChangeText={text => this.handleMessageChange('message', text)}
+            onChangeText={(text) => this.handleMessageChange("message", text)}
           />
         </Block>
       </View>
     );
-  }
+  };
 
   render() {
     return (
@@ -177,7 +197,8 @@ export default class Chat extends React.Component {
           enabled
           behavior="padding"
           style={{ flex: 1 }}
-          keyboardVerticalOffset={theme.SIZES.BASE * 3.2}>
+          keyboardVerticalOffset={theme.SIZES.BASE * 3.2}
+        >
           {this.renderMessages()}
           {this.messageForm()}
         </KeyboardAvoidingView>
@@ -187,14 +208,12 @@ export default class Chat extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    
-  },
+  container: {},
   messageFormContainer: {
     height: 96,
     paddingHorizontal: 16,
     paddingTop: 16,
-    paddingBottom: 32,    
+    paddingBottom: 32,
   },
   input: {
     width: width * 0.78,
@@ -204,7 +223,7 @@ const styles = StyleSheet.create({
   iconButton: {
     width: 40,
     height: 40,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   messagesWrapper: {
     flexGrow: 1,
@@ -212,10 +231,10 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 16,
     paddingVertical: 16,
-    paddingBottom: 68
+    paddingBottom: 68,
   },
   messageCardWrapper: {
-    maxWidth: '85%',
+    maxWidth: "85%",
     marginLeft: 8,
     marginBottom: 32,
   },
@@ -229,7 +248,7 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0, 0, 0, 0.12)",
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 20,
-    shadowOpacity: 1
+    shadowOpacity: 1,
   },
   time: {
     fontSize: 11,

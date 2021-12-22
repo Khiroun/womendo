@@ -15,14 +15,17 @@ const { width } = Dimensions.get("screen");
 
 import { products, Images } from "../constants/";
 import { Icon, Product } from "../components/";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/Screens";
 
 const suggestions = [
   { id: "auto", title: "Auto", image: Images.Products["Auto"] },
   { id: "makeup", title: "Makeup", image: Images.Products["Makeup"] },
   { id: "watches", title: "Watches", image: Images.Products["Watches"] },
 ];
+type Props = StackScreenProps<RootStackParamList, "Cart">;
 
-export default class Search extends React.Component {
+export default class Search extends React.Component<Props> {
   state = {
     results: [],
     search: "",
@@ -105,25 +108,31 @@ export default class Search extends React.Component {
     const { navigation } = this.props;
 
     return (
-        <FlatList
-          data={suggestions}
-          keyExtractor={(item, index) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.suggestion}
-              onPress={() => navigation.navigate("Category", { ...item })}
-            >
-              <Block flex row middle space="between">
-                <Text size={14}>{item.title}</Text>
-                <Icon
-                  name="chevron-right"
-                  family="evilicon"
-                  style={{ paddingRight: 5 }}
-                />
-              </Block>
-            </TouchableOpacity>
-          )}
-        />
+      <FlatList
+        data={suggestions}
+        keyExtractor={(item, index) => item.id}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.suggestion}
+            onPress={() =>
+              navigation.navigate("Category", {
+                id: item.id,
+                image: item.image,
+                title: item.title,
+              })
+            }
+          >
+            <Block flex row middle space="between">
+              <Text size={14}>{item.title}</Text>
+              <Icon
+                name="chevron-right"
+                family="evilicon"
+                style={{ paddingRight: 5 }}
+              />
+            </Block>
+          </TouchableOpacity>
+        )}
+      />
     );
   };
 
@@ -138,10 +147,30 @@ export default class Search extends React.Component {
             <Product
               product={products[1]}
               style={{ marginRight: theme.SIZES.BASE }}
+              goToProduct={() =>
+                this.props.navigation.navigate("Product", {
+                  product: products[1],
+                })
+              }
             />
-            <Product product={products[2]} />
+            <Product
+              product={products[2]}
+              goToProduct={() =>
+                this.props.navigation.navigate("Product", {
+                  product: products[2],
+                })
+              }
+            />
           </Block>
-          <Product product={products[0]} horizontal />
+          <Product
+            product={products[0]}
+            horizontal
+            goToProduct={() =>
+              this.props.navigation.navigate("Product", {
+                product: products[0],
+              })
+            }
+          />
         </Block>
       </ScrollView>
     );
@@ -159,7 +188,15 @@ export default class Search extends React.Component {
         style={{ width: width - theme.SIZES.BASE * 2, opacity }}
         key={`result-${result.title}`}
       >
-        <Product product={result} horizontal />
+        <Product
+          product={result}
+          horizontal
+          goToProduct={() =>
+            this.props.navigation.navigate("Product", {
+              product: products[result],
+            })
+          }
+        />
       </Animated.View>
     );
   };
@@ -193,7 +230,7 @@ export default class Search extends React.Component {
         <Block center style={styles.header}>
           {this.renderSearch()}
         </Block>
-        <View showsVerticalScrollIndicator={false}>{this.renderResults()}</View>
+        <View>{this.renderResults()}</View>
       </Block>
     );
   }

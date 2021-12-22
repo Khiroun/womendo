@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Dimensions,
@@ -8,16 +8,19 @@ import {
   Image,
   Animated,
   Platform,
-} from 'react-native';
+} from "react-native";
 // import Animated from 'react-native-reanimated';
-import { Block, Text, Button, theme } from 'galio-framework';
-import { Icon } from '../components';
-import materialTheme from '../constants/Theme';
+import { Block, Text, Button, theme } from "galio-framework";
+import { Icon } from "../components";
+import materialTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { iPhoneX, HeaderHeight } from "../constants/utils";
-const { height, width } = Dimensions.get('window');
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/Screens";
+const { height, width } = Dimensions.get("window");
+type Props = StackScreenProps<RootStackParamList, "Product">;
 
-export default class Product extends React.Component {
+export default class Product extends React.Component<Props> {
   state = {
     selectedSize: null,
   };
@@ -29,7 +32,12 @@ export default class Product extends React.Component {
     // const { params } = navigation && navigation.state;
     const product = route.params?.product;
     // const product = params.product;
-    const productImages = [product.image, product.image, product.image, product.image];
+    const productImages = [
+      product.image,
+      product.image,
+      product.image,
+      product.image,
+    ];
 
     return (
       <ScrollView
@@ -38,12 +46,18 @@ export default class Product extends React.Component {
         decelerationRate={0}
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: this.scrollX } } }], {useNativeDriver: false})}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: this.scrollX } } }],
+          { useNativeDriver: false }
+        )}
       >
         {productImages.map((image, index) => (
           <TouchableWithoutFeedback
             key={`product-image-${index}`}
-            onPress={() => navigation.navigate('Gallery', { images: productImages, index })}>
+            onPress={() =>
+              navigation.navigate("Gallery", { images: productImages, index })
+            }
+          >
             <Image
               resizeMode="cover"
               source={{ uri: image }}
@@ -52,13 +66,18 @@ export default class Product extends React.Component {
           </TouchableWithoutFeedback>
         ))}
       </ScrollView>
-    )
-  }
+    );
+  };
 
   renderProgress = () => {
     const { route } = this.props;
     const product = route.params?.product;
-    const productImages = [product.image, product.image, product.image, product.image];
+    const productImages = [
+      product.image,
+      product.image,
+      product.image,
+      product.image,
+    ];
 
     const position = Animated.divide(this.scrollX, width);
     return (
@@ -67,18 +86,20 @@ export default class Product extends React.Component {
           const opacity = position.interpolate({
             inputRange: [i - 1, i, i + 1],
             outputRange: [0.5, 1, 0.5],
-            extrapolate: 'clamp'
+            extrapolate: "clamp",
           });
           const width = position.interpolate({
             inputRange: [i - 1, i, i + 1],
             outputRange: [8, 18, 8],
-            extrapolate: 'clamp'
+            extrapolate: "clamp",
           });
-          return <Animated.View key={i} style={[styles.dots, {opacity, width}]} />;
+          return (
+            <Animated.View key={i} style={[styles.dots, { opacity, width }]} />
+          );
         })}
       </Block>
-    )
-  }
+    );
+  };
 
   renderSize = (label) => {
     const active = this.state.selectedSize === label;
@@ -87,11 +108,12 @@ export default class Product extends React.Component {
       <TouchableHighlight
         style={styles.sizeButton}
         underlayColor={materialTheme.COLORS.PRICE_COLOR}
-        onPress={() => this.setState({ selectedSize: label })}>
+        onPress={() => this.setState({ selectedSize: label })}
+      >
         <Text color={active ? theme.COLORS.PRIMARY : null}>{label}</Text>
       </TouchableHighlight>
     );
-  }
+  };
 
   renderChatButton = () => {
     const { navigation } = this.props;
@@ -102,12 +124,13 @@ export default class Product extends React.Component {
           opacity={0.9}
           style={styles.chat}
           color={materialTheme.COLORS.BUTTON_COLOR}
-          onPress={() => navigation.navigate('Chat')}>
+          onPress={() => navigation.navigate("Chat")}
+        >
           <Icon size={16} family="GalioExtra" name="chat-33" color="white" />
         </Button>
       </Block>
-    )
-  }
+    );
+  };
 
   render() {
     const { selectedSize } = this.state;
@@ -117,100 +140,161 @@ export default class Product extends React.Component {
     const product = route.params?.product;
 
     return (
-        <Block flex style={styles.product}>
-          <Block flex style={{ position: 'relative' }}>
-            {this.renderGallery()}
-            <Block center style={styles.dotsContainer}>
-              {this.renderProgress()}
-            </Block>
-          </Block>
-          <Block flex style={styles.options}>
-            {this.renderChatButton()}
-            <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
-              <Block style={{ paddingHorizontal: theme.SIZES.BASE, paddingTop: theme.SIZES.BASE * 2 }}>
-                <Text size={28} style={{ paddingBottom: 24 }}>{product.title}</Text>
-                <Block row space="between">
-                  <Block row>
-                    <Image source={{ uri: Images.Profile }} style={styles.avatar} />
-                    <Block>
-                      <Text size={14}>Rachel Brown</Text>
-                      <Text size={14} muted>Pro Seller</Text>
-                    </Block>
-                  </Block>
-                  <Text size={18} bold>$735</Text>
-                </Block>
-              </Block>
-              <Block style={{ padding: theme.SIZES.BASE }}>
-                <Text size={16}>Size</Text>
-                <Block card style={{ marginTop: 16 }}>
-                  <Block row>
-                    <Block flex middle style={[styles.size, styles.roundTopLeft, selectedSize === 'XS' ? styles.active : null ]}>
-                      {this.renderSize('XS')}
-                    </Block>
-                    <Block flex middle style={[styles.size, selectedSize === 'S' ? styles.active : null, ]}>
-                      {this.renderSize('S')}
-                    </Block>
-                    <Block flex middle style={[styles.size, styles.roundTopRight, selectedSize === 'M' ? styles.active : null, ]}>
-                      {this.renderSize('M')}
-                    </Block>
-                  </Block>
-                  <Block row>
-                    <Block flex middle style={[styles.size, styles.roundBottomLeft, selectedSize === 'L' ? styles.active : null, ]}>
-                      {this.renderSize('L')}
-                    </Block>
-                    <Block flex middle style={[styles.size, { borderBottomWidth: 0 }, selectedSize === 'XL' ? styles.active : null, ]}>
-                      {this.renderSize('XL')}
-                    </Block>
-                    <Block flex middle style={[styles.size, styles.roundBottomRight, selectedSize === '2XL' ? styles.active : null, ]}>
-                      {this.renderSize('2XL')}
-                    </Block>
-                  </Block>
-                </Block>
-                <Button
-                  shadowless
-                  style={styles.addToCart}
-                  color={materialTheme.COLORS.BUTTON_COLOR}
-                  onPress={() => navigation.navigate('Cart')}>
-                  ADD TO CART
-                </Button>
-              </Block>
-            </ScrollView>
+      <Block flex style={styles.product}>
+        <Block flex style={{ position: "relative" }}>
+          {this.renderGallery()}
+          <Block center style={styles.dotsContainer}>
+            {this.renderProgress()}
           </Block>
         </Block>
+        <Block flex style={styles.options}>
+          {this.renderChatButton()}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Block
+              style={{
+                paddingHorizontal: theme.SIZES.BASE,
+                paddingTop: theme.SIZES.BASE * 2,
+              }}
+            >
+              <Text size={28} style={{ paddingBottom: 24 }}>
+                {product.title}
+              </Text>
+              <Block row space="between">
+                <Block row>
+                  <Image
+                    source={{ uri: Images.Profile }}
+                    style={styles.avatar}
+                  />
+                  <Block>
+                    <Text size={14}>Rachel Brown</Text>
+                    <Text size={14} muted>
+                      Pro Seller
+                    </Text>
+                  </Block>
+                </Block>
+                <Text size={18} bold>
+                  $735
+                </Text>
+              </Block>
+            </Block>
+            <Block style={{ padding: theme.SIZES.BASE }}>
+              <Text size={16}>Size</Text>
+              <Block card style={{ marginTop: 16 }}>
+                <Block row>
+                  <Block
+                    flex
+                    middle
+                    style={[
+                      styles.size,
+                      styles.roundTopLeft,
+                      selectedSize === "XS" ? styles.active : null,
+                    ]}
+                  >
+                    {this.renderSize("XS")}
+                  </Block>
+                  <Block
+                    flex
+                    middle
+                    style={[
+                      styles.size,
+                      selectedSize === "S" ? styles.active : null,
+                    ]}
+                  >
+                    {this.renderSize("S")}
+                  </Block>
+                  <Block
+                    flex
+                    middle
+                    style={[
+                      styles.size,
+                      styles.roundTopRight,
+                      selectedSize === "M" ? styles.active : null,
+                    ]}
+                  >
+                    {this.renderSize("M")}
+                  </Block>
+                </Block>
+                <Block row>
+                  <Block
+                    flex
+                    middle
+                    style={[
+                      styles.size,
+                      styles.roundBottomLeft,
+                      selectedSize === "L" ? styles.active : null,
+                    ]}
+                  >
+                    {this.renderSize("L")}
+                  </Block>
+                  <Block
+                    flex
+                    middle
+                    style={[
+                      styles.size,
+                      { borderBottomWidth: 0 },
+                      selectedSize === "XL" ? styles.active : null,
+                    ]}
+                  >
+                    {this.renderSize("XL")}
+                  </Block>
+                  <Block
+                    flex
+                    middle
+                    style={[
+                      styles.size,
+                      styles.roundBottomRight,
+                      selectedSize === "2XL" ? styles.active : null,
+                    ]}
+                  >
+                    {this.renderSize("2XL")}
+                  </Block>
+                </Block>
+              </Block>
+              <Button
+                shadowless
+                style={styles.addToCart}
+                color={materialTheme.COLORS.BUTTON_COLOR}
+                onPress={() => navigation.navigate("Cart")}
+              >
+                ADD TO CART
+              </Button>
+            </Block>
+          </ScrollView>
+        </Block>
+      </Block>
     );
   }
 }
 
 const styles = StyleSheet.create({
   product: {
-    marginTop: Platform.OS === 'android' ? -HeaderHeight : 0,
+    marginTop: Platform.OS === "android" ? -HeaderHeight : 0,
   },
   options: {
-    position: 'relative',
+    position: "relative",
     marginHorizontal: theme.SIZES.BASE,
     marginTop: -theme.SIZES.BASE * 2,
     marginBottom: 0,
     borderTopLeftRadius: 13,
     borderTopRightRadius: 13,
     backgroundColor: theme.COLORS.WHITE,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 8,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
   },
   galleryImage: {
     width: width,
-    height: 'auto'
+    height: "auto",
   },
   dots: {
     height: theme.SIZES.BASE / 2,
     margin: theme.SIZES.BASE / 2,
     borderRadius: 4,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   dotsContainer: {
-    position: 'absolute',
-    bottom: theme.SIZES.BASE,
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: height / 12,
@@ -221,7 +305,7 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0, 0, 0, 0.2)",
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 8,
-    shadowOpacity: 1
+    shadowOpacity: 1,
   },
   avatar: {
     height: 40,
@@ -238,26 +322,26 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(0, 0, 0, 0.2)",
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 8,
-    shadowOpacity: 1
+    shadowOpacity: 1,
   },
   chatContainer: {
     top: -30,
     right: theme.SIZES.BASE,
     zIndex: 2,
-    position: 'absolute',
+    position: "absolute",
   },
   size: {
     height: theme.SIZES.BASE * 3,
     width: (width - theme.SIZES.BASE * 2) / 3,
     borderBottomWidth: 0.5,
     borderBottomColor: materialTheme.COLORS.BORDER_COLOR,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   sizeButton: {
     height: theme.SIZES.BASE * 3,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   active: {
     backgroundColor: materialTheme.COLORS.PRICE_COLOR,

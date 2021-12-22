@@ -1,14 +1,19 @@
-import React from 'react';
-import { ImageBackground, Image, StyleSheet, StatusBar, Dimensions } from 'react-native';
-import { Block, Button, Text, theme } from 'galio-framework';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { Image, StyleSheet, StatusBar, Dimensions } from "react-native";
+import { StackScreenProps } from "@react-navigation/stack";
 
-const { height, width } = Dimensions.get('screen');
+import { Block, Button, Text, theme } from "galio-framework";
+import { LinearGradient } from "expo-linear-gradient";
 
-import materialTheme from '../constants/Theme';
-import Images from '../constants/Images';
+const { height, width } = Dimensions.get("screen");
 
-export default class Onboarding extends React.Component {
+import materialTheme from "../constants/Theme";
+import Images from "../constants/Images";
+import { RootStackParamList } from "../navigation/Screens";
+
+type Props = StackScreenProps<RootStackParamList, "Onboarding">;
+
+export default class Onboarding extends React.Component<Props> {
   render() {
     const { navigation } = this.props;
 
@@ -22,23 +27,38 @@ export default class Onboarding extends React.Component {
           />
         </Block>
         <Block flex={1.3} space="between" style={styles.padded}>
-          <Block style={{ paddingTop: 50, position: 'relative' }}>
+          <Block style={{ paddingTop: 50, position: "relative" }}>
             <LinearGradient
               style={styles.gradient}
-              colors={['rgba(0,0,0,0)', 'rgba(0,0,0,1)']} />
-            <Block style={{ marginBottom: theme.SIZES.BASE / 2, paddingHorizontal: theme.SIZES.BASE * 2, zIndex: 3 }}>
+              colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
+            />
+            <Block
+              style={{
+                marginBottom: theme.SIZES.BASE / 2,
+                paddingHorizontal: theme.SIZES.BASE * 2,
+                zIndex: 3,
+              }}
+            >
               <Block>
-                <Text color="white" size={60}>Material</Text>
+                <Text color="white" size={60}>
+                  Material
+                </Text>
               </Block>
               <Block row>
-                <Text color="white" size={60}>Kit</Text>
+                <Text color="white" size={60}>
+                  Kit
+                </Text>
                 <Block middle style={styles.pro}>
-                  <Text size={16} color="white">PRO</Text>
+                  <Text size={16} color="white">
+                    PRO
+                  </Text>
                 </Block>
               </Block>
             </Block>
-            <Block style={{ paddingHorizontal: theme.SIZES.BASE * 2,  zIndex: 3 }}>
-              <Text size={16} color='rgba(255,255,255,0.6)'>
+            <Block
+              style={{ paddingHorizontal: theme.SIZES.BASE * 2, zIndex: 3 }}
+            >
+              <Text size={16} color="rgba(255,255,255,0.6)">
                 Fully coded React Native components.
               </Text>
             </Block>
@@ -48,7 +68,8 @@ export default class Onboarding extends React.Component {
               shadowless
               style={styles.button}
               color={materialTheme.COLORS.BUTTON_COLOR}
-              onPress={() => navigation.navigate('App')}>
+              onPress={() => navigation.navigate("App")}
+            >
               GET STARTED
             </Button>
           </Block>
@@ -64,7 +85,7 @@ const styles = StyleSheet.create({
   },
   padded: {
     // paddingHorizontal: theme.SIZES.BASE * 2,
-    position: 'relative',
+    position: "relative",
     bottom: theme.SIZES.BASE,
   },
   button: {
@@ -78,11 +99,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginLeft: 12,
     borderRadius: 2,
-    height: 22
+    height: 22,
   },
   gradient: {
     zIndex: 1,
-    position: 'absolute',
+    position: "absolute",
     top: 33 + theme.SIZES.BASE,
     left: 0,
     right: 0,
