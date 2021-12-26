@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { Icon, Header } from "../components/";
-import { Images, materialTheme } from "../constants/";
+import { materialTheme } from "../constants/";
 
 // screens
 import OnboardingScreen from "../screens/Onboarding";
@@ -37,7 +37,9 @@ import AgreementScreen from "../screens/Agreement";
 
 import CustomDrawerContent from "./Menu";
 import { tabs } from "../constants/";
-
+import useGetCurrentCategoryName from "../hooks/useGetCurrentCategoryName";
+import appConfig from "../appConfig";
+import useGetUser from "../hooks/useGetUser";
 export type RootStackParamList = {
   Onboarding: undefined;
   App: undefined;
@@ -98,15 +100,8 @@ const { width } = Dimensions.get("screen");
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<DrawerParamList>();
 
-const profile = {
-  avatar: Images.Profile,
-  name: "Rachel Brown",
-  type: "Seller",
-  plan: "Pro",
-  rating: 4.8,
-};
-
 function ProfileStack(props) {
+  const user = useGetUser();
   return (
     <Stack.Navigator initialRouteName="Profile" mode="card" headerMode="screen">
       <Stack.Screen
@@ -123,9 +118,15 @@ function ProfileStack(props) {
         name="Chat"
         component={ChatScreen}
         options={{
-          header: ({ navigation }) => (
-            <Header back title="Rachel Brown" navigation={navigation} />
-          ),
+          header: ({ navigation }) => {
+            if (user) {
+              return (
+                <Header back title={user.userName} navigation={navigation} />
+              );
+            } else {
+              return <Header back navigation={navigation} />;
+            }
+          },
         }}
       />
       <Stack.Screen
@@ -142,6 +143,7 @@ function ProfileStack(props) {
 }
 
 function SettingsStack(props) {
+  const user = useGetUser();
   return (
     <Stack.Navigator
       initialRouteName="Settings"
@@ -201,9 +203,15 @@ function SettingsStack(props) {
         name="Chat"
         component={ChatScreen}
         options={{
-          header: ({ navigation }) => (
-            <Header back title="Rachel Brown" navigation={navigation} />
-          ),
+          header: ({ navigation }) => {
+            if (user) {
+              return (
+                <Header back title={user.userName} navigation={navigation} />
+              );
+            } else {
+              return <Header back navigation={navigation} />;
+            }
+          },
         }}
       />
       <Stack.Screen
@@ -250,6 +258,7 @@ export default function OnboardingStack(props) {
 
 function WomanStack(props) {
   const currentCategoryName = useGetCurrentCategoryName();
+  const user = useGetUser();
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -329,9 +338,15 @@ function WomanStack(props) {
         name="Chat"
         component={ChatScreen}
         options={{
-          header: ({ navigation }) => (
-            <Header back title="Rachel Brown" navigation={navigation} />
-          ),
+          header: ({ navigation }) => {
+            if (user) {
+              return (
+                <Header back title={user.userName} navigation={navigation} />
+              );
+            } else {
+              return <Header back navigation={navigation} />;
+            }
+          },
         }}
       />
       <Stack.Screen
@@ -358,6 +373,7 @@ function WomanStack(props) {
 
 function ManStack(props) {
   const currentCategoryName = useGetCurrentCategoryName();
+  const user = useGetUser();
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -437,9 +453,15 @@ function ManStack(props) {
         name="Chat"
         component={ChatScreen}
         options={{
-          header: ({ navigation }) => (
-            <Header back title="Rachel Brown" navigation={navigation} />
-          ),
+          header: ({ navigation }) => {
+            if (user) {
+              return (
+                <Header back title={user.userName} navigation={navigation} />
+              );
+            } else {
+              return <Header back navigation={navigation} />;
+            }
+          },
         }}
       />
       <Stack.Screen
@@ -466,6 +488,7 @@ function ManStack(props) {
 
 function KidsStack(props) {
   const currentCategoryName = useGetCurrentCategoryName();
+  const user = useGetUser();
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -545,9 +568,15 @@ function KidsStack(props) {
         name="Chat"
         component={ChatScreen}
         options={{
-          header: ({ navigation }) => (
-            <Header back title="Rachel Brown" navigation={navigation} />
-          ),
+          header: ({ navigation }) => {
+            if (user) {
+              return (
+                <Header back title={user.userName} navigation={navigation} />
+              );
+            } else {
+              return <Header back navigation={navigation} />;
+            }
+          },
         }}
       />
       <Stack.Screen
@@ -574,6 +603,7 @@ function KidsStack(props) {
 
 function NewCollectionStack(props) {
   const currentCategoryName = useGetCurrentCategoryName();
+  const user = useGetUser();
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -658,9 +688,15 @@ function NewCollectionStack(props) {
         name="Chat"
         component={ChatScreen}
         options={{
-          header: ({ navigation }) => (
-            <Header back title="Rachel Brown" navigation={navigation} />
-          ),
+          header: ({ navigation }) => {
+            if (user) {
+              return (
+                <Header back title={user.userName} navigation={navigation} />
+              );
+            } else {
+              return <Header back navigation={navigation} />;
+            }
+          },
         }}
       />
       <Stack.Screen
@@ -687,6 +723,7 @@ function NewCollectionStack(props) {
 
 function HomeStack(props) {
   const currentCategoryName = useGetCurrentCategoryName();
+  const user = useGetUser();
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -694,7 +731,12 @@ function HomeStack(props) {
         component={HomeScreen}
         options={{
           header: ({ navigation }) => (
-            <Header search options title="Home" navigation={navigation} />
+            <Header
+              search
+              title="Accueil"
+              navigation={navigation}
+              tabs={appConfig.categories}
+            />
           ),
         }}
       />
@@ -766,9 +808,15 @@ function HomeStack(props) {
         name="Chat"
         component={ChatScreen}
         options={{
-          header: ({ navigation }) => (
-            <Header back title="Rachel Brown" navigation={navigation} />
-          ),
+          header: ({ navigation }) => {
+            if (user) {
+              return (
+                <Header back title={user.userName} navigation={navigation} />
+              );
+            } else {
+              return <Header back navigation={navigation} />;
+            }
+          },
         }}
       />
       <Stack.Screen
@@ -799,9 +847,7 @@ function AppStack(props) {
       sceneContainerStyle={{
         flex: 1,
       }}
-      drawerContent={(props) => (
-        <CustomDrawerContent {...props} profile={profile} />
-      )}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       drawerStyle={{
         backgroundColor: "white",
         width: width * 0.8,

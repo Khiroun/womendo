@@ -9,11 +9,12 @@ import NavigationProp from "../navigation/NavigationProp";
 type Props = {
   title?: string;
   focused?: boolean;
+  label?: string;
   navigation: NavigationProp;
 };
 class DrawerItem extends React.Component<Props> {
   renderIcon = () => {
-    const { title, focused } = this.props;
+    const { title, focused, label } = this.props;
 
     switch (title) {
       case "Home":
@@ -111,7 +112,7 @@ class DrawerItem extends React.Component<Props> {
     }
   };
   render() {
-    const { title, focused, navigation } = this.props;
+    const { title, focused, navigation, label } = this.props;
     return (
       <TouchableOpacity
         style={{ height: 55 }}
@@ -130,7 +131,7 @@ class DrawerItem extends React.Component<Props> {
           </Block>
           <Block flex={0.9}>
             <Text size={15} color={focused ? "white" : "black"}>
-              {title}
+              {label ? label : title}
             </Text>
           </Block>
         </Block>

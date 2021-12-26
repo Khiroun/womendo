@@ -4,24 +4,23 @@ import {
   ScrollView,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Icon, Drawer as DrawerCustomItem } from "../components/";
+import { Icon, Drawer as DrawerCustomItem, Button } from "../components/";
 import { materialTheme } from "../constants/";
 import NavigationProp from "./NavigationProp";
+import useGetUser from "../hooks/useGetUser";
+import { noImage } from "../constants/Images";
+import appConfig from "../appConfig";
+import useLogout from "../hooks/useLogout";
 
 type Props = {
   drawerPosition?: "left" | "right";
   navigation?: NavigationProp;
-  profile?: {
-    avatar?: string;
-    name?: string;
-    plan?: string;
-    type?: string;
-    rating?: number;
-  };
+
   state?: {
     index?: number;
   };
@@ -30,11 +29,10 @@ type Props = {
 const CustomDrawerContent: React.FC<Props> = ({
   drawerPosition,
   navigation,
-  profile,
   state,
 }) => {
   const insets = useSafeAreaInsets();
-  const screens = [
+  /*const screens = [
     "Home",
     "Woman",
     "Man",
@@ -43,37 +41,55 @@ const CustomDrawerContent: React.FC<Props> = ({
     "Profile",
     "Settings",
     "Components",
+  ];*/
+  const screens = [
+    { name: "Home", title: "Accueil" },
+    { name: "Woman", title: "Vêtements" },
+    { name: "Man", title: "Beauté" },
+    { name: "Kids", title: "Accessoires" },
+    { name: "New Collection", title: "Sport" },
   ];
+  const user = useGetUser();
+  const { loading, logout } = useLogout();
   return (
     <Block
       style={styles.container}
       forceInset={{ top: "always", horizontal: "never" }}
     >
       <Block flex={0.23} style={styles.header}>
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate("Profile")}
-        >
-          <Block style={styles.profile}>
-            <Image source={{ uri: profile.avatar }} style={styles.avatar} />
-            <Text h5 color={"white"}>
-              {profile.name}
-            </Text>
+        {user ? (
+          <>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate("Profile")}
+            >
+              <Block style={styles.profile}>
+                {user.profileImage ? (
+                  <Image
+                    source={{ uri: user.profileImage }}
+                    style={styles.avatar}
+                  />
+                ) : (
+                  <Image source={noImage} style={styles.avatar} />
+                )}
+                <Text h5 color={"white"}>
+                  {user.userName}
+                </Text>
+              </Block>
+            </TouchableWithoutFeedback>
+            <Block row>
+              <Text size={16} color={materialTheme.COLORS.WARNING}>
+                {user.rating ? user.rating : 5}
+                <Icon name="shape-star" family="GalioExtra" size={14} />
+              </Text>
+            </Block>
+          </>
+        ) : (
+          <Block>
+            <Button gradient onPress={() => navigation.navigate("Sign In")}>
+              SE CONNECTER
+            </Button>
           </Block>
-        </TouchableWithoutFeedback>
-        <Block row>
-          <Block middle style={styles.pro}>
-            <Text size={16} color="white">
-              {profile.plan}
-            </Text>
-          </Block>
-          <Text size={16} muted style={styles.seller}>
-            {profile.type}
-          </Text>
-          <Text size={16} color={materialTheme.COLORS.WARNING}>
-            {profile.rating}{" "}
-            <Icon name="shape-star" family="GalioExtra" size={14} />
-          </Text>
-        </Block>
+        )}
       </Block>
       <Block flex style={{ paddingLeft: 7, paddingRight: 14 }}>
         <ScrollView
@@ -89,7 +105,8 @@ const CustomDrawerContent: React.FC<Props> = ({
           {screens.map((item, index) => {
             return (
               <DrawerCustomItem
-                title={item}
+                title={item.name}
+                label={item.title}
                 key={index}
                 navigation={navigation}
                 focused={state.index === index ? true : false}
@@ -99,16 +116,32 @@ const CustomDrawerContent: React.FC<Props> = ({
         </ScrollView>
       </Block>
       <Block flex={0.25} style={{ paddingLeft: 7, paddingRight: 14 }}>
-        <DrawerCustomItem
-          title="Sign In"
-          navigation={navigation}
-          focused={state.index === 8 ? true : false}
-        />
-        <DrawerCustomItem
-          title="Sign Up"
-          navigation={navigation}
-          focused={state.index === 9 ? true : false}
-        />
+        {user ? (
+          <>
+            <Button gradient disabled={loading} onPress={logout}>
+              {loading ? (
+                <ActivityIndicator size={25} color="#fff" />
+              ) : (
+                "SE DECONNECTER"
+              )}
+            </Button>
+          </>
+        ) : (
+          <>
+            <DrawerCustomItem
+              title="Sign In"
+              navigation={navigation}
+              focused={state.index === 8 ? true : false}
+              label="Se Connecter"
+            />
+            <DrawerCustomItem
+              title="Sign Up"
+              navigation={navigation}
+              focused={state.index === 9 ? true : false}
+              label="Créer un compte"
+            />
+          </>
+        )}
       </Block>
     </Block>
   );

@@ -8,11 +8,13 @@ import materialTheme from "../constants/Theme";
 type Props = {
   gradient?: boolean;
   style?: StyleProp<ViewStyle>;
+  onPress?: () => void;
+  disabled?: boolean;
 };
 
 export default class MKButton extends React.Component<Props> {
   render() {
-    const { gradient, children, style, ...props } = this.props;
+    const { gradient, children, style, disabled, ...props } = this.props;
 
     if (gradient) {
       return (

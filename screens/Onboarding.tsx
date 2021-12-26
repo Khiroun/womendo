@@ -3,13 +3,12 @@ import { Image, StyleSheet, StatusBar, Dimensions } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 
 import { Block, Button, Text, theme } from "galio-framework";
-import { LinearGradient } from "expo-linear-gradient";
 
 const { height, width } = Dimensions.get("screen");
 
 import materialTheme from "../constants/Theme";
-import Images from "../constants/Images";
 import { RootStackParamList } from "../navigation/Screens";
+import appConfig from "../appConfig";
 
 type Props = StackScreenProps<RootStackParamList, "Onboarding">;
 
@@ -22,16 +21,12 @@ export default class Onboarding extends React.Component<Props> {
         <StatusBar barStyle="light-content" />
         <Block flex center>
           <Image
-            source={{ uri: Images.Onboarding }}
-            style={{ height: height / 1.8, width, zIndex: 1 }}
+            source={appConfig.onBoarding.image}
+            style={{ width, zIndex: 1 }}
           />
         </Block>
         <Block flex={1.3} space="between" style={styles.padded}>
           <Block style={{ paddingTop: 50, position: "relative" }}>
-            <LinearGradient
-              style={styles.gradient}
-              colors={["rgba(0,0,0,0)", "rgba(0,0,0,1)"]}
-            />
             <Block
               style={{
                 marginBottom: theme.SIZES.BASE / 2,
@@ -41,16 +36,16 @@ export default class Onboarding extends React.Component<Props> {
             >
               <Block>
                 <Text color="white" size={60}>
-                  Material
+                  {appConfig.onBoarding.bigText1}
                 </Text>
               </Block>
               <Block row>
                 <Text color="white" size={60}>
-                  Kit
+                  {appConfig.onBoarding.bigText2}
                 </Text>
                 <Block middle style={styles.pro}>
                   <Text size={16} color="white">
-                    PRO
+                    {appConfig.onBoarding.smallText}
                   </Text>
                 </Block>
               </Block>
@@ -59,7 +54,7 @@ export default class Onboarding extends React.Component<Props> {
               style={{ paddingHorizontal: theme.SIZES.BASE * 2, zIndex: 3 }}
             >
               <Text size={16} color="rgba(255,255,255,0.6)">
-                Fully coded React Native components.
+                {appConfig.onBoarding.subHeader}
               </Text>
             </Block>
           </Block>
@@ -70,7 +65,7 @@ export default class Onboarding extends React.Component<Props> {
               color={materialTheme.COLORS.BUTTON_COLOR}
               onPress={() => navigation.navigate("App")}
             >
-              GET STARTED
+              {appConfig.onBoarding.buttonText}
             </Button>
           </Block>
         </Block>

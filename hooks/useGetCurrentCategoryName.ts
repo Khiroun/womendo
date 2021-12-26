@@ -1,3 +1,8 @@
+import { useContext } from "react";
+import { AppContext } from "../AppContext/AppContext";
+
 const useGetCurrentCategoryName = () => {
-  return "current category";
+  const { state } = useContext(AppContext);
+  return state.currentCategory;
 };
+export default useGetCurrentCategoryName;

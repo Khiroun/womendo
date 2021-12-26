@@ -17,6 +17,7 @@ import Images from "../constants/Images";
 import { iPhoneX, HeaderHeight } from "../constants/utils";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigation/Screens";
+import useGetUser from "../hooks/useGetUser";
 const { height, width } = Dimensions.get("window");
 type Props = StackScreenProps<RootStackParamList, "Product">;
 
@@ -138,7 +139,7 @@ export default class Product extends React.Component<Props> {
     // const { params } = navigation && navigation.state;
     // const product = params.product;
     const product = route.params?.product;
-
+    const user = useGetUser();
     return (
       <Block flex style={styles.product}>
         <Block flex style={{ position: "relative" }}>
@@ -166,7 +167,7 @@ export default class Product extends React.Component<Props> {
                     style={styles.avatar}
                   />
                   <Block>
-                    <Text size={14}>Rachel Brown</Text>
+                    <Text size={14}>{user?.userName}</Text>
                     <Text size={14} muted>
                       Pro Seller
                     </Text>

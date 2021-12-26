@@ -5,12 +5,12 @@ import { Asset } from "expo-asset";
 import { Block, GalioProvider } from "galio-framework";
 import { NavigationContainer } from "@react-navigation/native";
 
-// Before rendering any navigation stack
 import { enableScreens } from "react-native-screens";
 enableScreens();
 
-import Screens from "./navigation/Screens";
 import { Images, materialTheme } from "./constants/";
+import { AppProvider } from "./AppContext/AppContext";
+import Main from "./Main";
 
 const assetImages = [
   Images.Profile,
@@ -26,14 +26,6 @@ const assetImages = [
   Images.Products.Mustang,
   Images.Products["Harley-Davidson"],
 ];
-
-// cache product images
-// products.map(product => assetImages.push(product.image));
-
-// cache categories images
-// Object.keys(categories).map(key => {
-//   categories[key].map(category => assetImages.push(category.image));
-// });
 
 function cacheImages(images) {
   return images.map((image) => {
@@ -65,14 +57,16 @@ export default class App extends React.Component<Params> {
       );
     } else {
       return (
-        <NavigationContainer>
-          <GalioProvider theme={materialTheme}>
-            <Block flex>
-              {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-              <Screens />
-            </Block>
-          </GalioProvider>
-        </NavigationContainer>
+        <AppProvider>
+          <NavigationContainer>
+            <GalioProvider theme={materialTheme}>
+              <Block flex>
+                {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+                <Main />
+              </Block>
+            </GalioProvider>
+          </NavigationContainer>
+        </AppProvider>
       );
     }
   }
